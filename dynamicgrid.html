@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Grid Generator=</title>
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #mainBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background-color: #f0f0f0;
+      gap: 10px;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: calc(100vh - 80px);
+    }
+
+    .box {
+      background-color: #a1dee2;
+      border: 2px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2em;
+      transition: background-color 0.3s ease;
+    }
+
+    input, button {
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 10px;
+      border: 2px solid #ccc;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    .box.hovered {
+      background-color: #bb1111 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="mainBox">
+    <input type="number" id="numInput" placeholder="Enter a number" min="1" />
+    <button onclick="generateGrid()">Generate</button>
+  </div>
+
+  <div id="grid"></div>
+
+  <script>
+    const hoveredBoxes = [];
+
+    function generateGrid() {
+      const number = parseInt(document.getElementById('numInput').value);
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      if (isNaN(number) || number < 1) {
+        alert('Please enter a valid positive number');
+        return;
+      }
+
+      grid.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
+      grid.style.gridTemplateRows = `repeat(${number}, 1fr)`;
+
+      const totalBoxes = number * number;
+
+      for (let i = 1; i <= totalBoxes; i++) {
+        const box = document.createElement('div');
+        box.classList.add('box');
+        box.textContent = i;
+        grid.appendChild(box);
+
+        box.addEventListener('mouseover', () => {
+          if (!box.classList.contains('hovered')) {
+            if (hoveredBoxes.length >= 4) {
+              oldBox.style.backgroundColor = '#a1dee2'; 
+            }
+            box.classList.add('hovered');
+            hoveredBoxes.push(box);
+            box.style.backgroundColor = '#bb1111';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
